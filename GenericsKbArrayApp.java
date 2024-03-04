@@ -56,7 +56,7 @@ public class GenericsKbArrayApp {
                     add_NewStatement(input);
                     break;
                 case 3:
-                    searchByTerm(input);
+                    searchBy_Term(input);
                     break;
                 case 4:
                     searchByTermAndSentence(input);
@@ -141,7 +141,7 @@ public class GenericsKbArrayApp {
         return -1;  // Term not found
     }
 
-    private static void searchByTerm(Scanner input) {
+    private static void searchBy_Term(Scanner input) {
         System.out.print("Enter the term to search: ");
         String term = input.next();
         input.nextLine();  
@@ -158,4 +158,30 @@ public class GenericsKbArrayApp {
             // Term not found, inform the user
             System.out.println("Term " + term + " not found in the knowledge base.");
         }
-    }    
+    }   
+
+       private static void searchByTermAndSentence(Scanner input) {
+        System.out.print("Enter the term: ")
+        String term = input.next();
+        input.nextln();
+
+        System.out.print("Enter the statement to search for: ")
+        String sentence = input.next();
+        input.nextln();
+
+        int position = FindTerm_ByIndexPosition(term);
+
+        if (position != -1) {
+            // Term found, update the statement
+            Statements foundTerm = knowledgeBase[position]
+            if (foundTerm != null && foundTerm.getSentence.equals(sentence) ){
+                 System.out.println("The statement was found and has a confidence score of "+ foundTerm.getConfidenceScore);
+            }
+            else{
+                System.out.println("The statement was not found")
+            }
+        else{
+            System.out.println("Term " + term + " not found in the knowledge base.");
+        }
+
+    }
