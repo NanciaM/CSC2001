@@ -1,12 +1,43 @@
+/*CSC2001 Assigment 1
+ * Java program for querying and updating knowledge in GenericsKB 
+ * Using traditional Arrays data structure.
+ * by Nancia Mwaramba
+ */
+
 
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class GenericsKbArrayApp {
-    private static final int MAX_SIZE = 300; // On avaerage the lagest data entry was 140 characters long. Therefore I set the max size to 300
-    private static TermEntry[] knowledgeBase = new TermEntry[MAX_SIZE];
+    private static final int MAX_SIZE = 100000; // GenericsKB.txt has approximatetely 50000 terms, thus max size allows an additional 50000 new terms
+    private static Statements[] knowledgeBase = new Statements[MAX_SIZE];
     private static int currentSize = 0;
+
+    private static class Statements {
+        String term;
+        String sentence;
+        double confidenceScore;
+
+        public Statements(String term, String sentence, double confidenceScore) {
+            this.term = term;
+            this.sentence = sentence;
+            this.confidenceScore = confidenceScore;
+        }
+
+        public String getTerm() {
+            return term;
+        }
+
+        public String getSentence() {
+            return sentence;
+        }
+
+        public float getConfidenceScore() {
+            return confidenceScore;
+        }
+    }
+ 
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
@@ -19,10 +50,10 @@ public class GenericsKbArrayApp {
 
             switch (choice) {
                 case 1:
-                    loadKnowledgeBaseFromFile(input);
+                    loadKnowledgeBase_FromFile(input);
                     break;
                 case 2:
-                    addNewStatement(input);
+                    add_NewStatement(input);
                     break;
                 case 3:
                     searchByTerm(input);
@@ -50,7 +81,7 @@ public class GenericsKbArrayApp {
         System.out.println("5. Quit");
     }
 
-    private static void loadKnowledgeBaseFromFile(Scanner input) {
+    private static void loadKnowledgeBase_FromFile(Scanner input) {
         System.out.print("Enter the file name: ");// get the name of file to be loaded
         String file = input.next();
 
@@ -68,21 +99,18 @@ public class GenericsKbArrayApp {
                     System.out.println("Invalid data format in the file.");
                 }
             }
-
             System.out.println("Knowledge base loaded successfully.");
         } catch (FileNotFoundException e) {
             System.out.println("File not found. Please check the file name and try again.");
         } catch (NumberFormatException e) {
             System.out.println("Error parsing confidence score. Please check the file format.");
         }
-    
-        System.out.println("Knowledge base loaded successfully.");
     }
 
-    private static void addNewStatement(Scanner input) {
-        ystem.out.print("Enter the term: ");
+    private static void add_NewStatement(Scanner input) {
+        System.out.print("Enter the term: ");
         String term = input.next();
-        input.nextLine();  // Consume the newline character
+        input.nextLine();  
 
         System.out.print("Enter the sentence: ");
         String sentence = input.nextLine();
@@ -91,11 +119,11 @@ public class GenericsKbArrayApp {
         float confidenceScore = input.nextfloat();
 
         // Search for the term in the knowledge base
-        int index = findIndexByTerm(term);
+        int position = FindTerm_ByIndexPosition(term);
 
-        if (index != -1) {
+        if (position != -1) {
             // Term found, update the statement
-            knowledgeBase[index] = new Statement(term, sentence, confidenceScore);
+            knowledgeBase[position] = new Statements(term, sentence, confidenceScore);
             System.out.println("Statement for term " + term + " has been updated.");
         } else {
             // Term not found, inform the user
@@ -104,46 +132,30 @@ public class GenericsKbArrayApp {
         System.out.println("Statement for term has been updated.");
     }
 
-    private static int findIndexByTerm(String term) {
+    private static int FindTerm_ByIndexPosition(String term) {
         for (int i = 0; i < knowledgeBase.length; i++) {
             if (knowledgeBase[i] != null && knowledgeBase[i].getTerm().equals(term)) {
-                return i;  // Found the term, return the index
+                return i;  // Found the term, return the position
             }
         }
         return -1;  // Term not found
     }
 
-    private static class Statement {
-        private String term;
-        private String sentence;
-        private double confidenceScore;
-
-        public Statement(String term, String sentence, double confidenceScore) {
-            this.term = term;
-            this.sentence = sentence;
-            this.confidenceScore = confidenceScore;
-        }
-
-        public String getTerm() {
-            return term;
-        }
-    }
-        
-
-
     private static void searchByTerm(Scanner input) {
-        // Implementation to search for an item in the knowledge base by term
-        // ...
-        System.out.println("Statement found: ...");
-    }
+        System.out.print("Enter the term to search: ");
+        String term = input.next();
+        input.nextLine();  
 
-    private static void searchByTermAndSentence(Scanner input) {
-        // Implementation to search for an item in the knowledge base by term and sentence
-        // ...
-        System.out.println("The statement was found and has a confidence score of ...");
-    }
+        int position = FindTerm_ByIndexPosition(term);
 
-    
-}
-
- 
+        if (position != -1) {
+            // Term found, update the statement
+            Statements foundTerm = knowledgeBase[position]
+            System.out.println("Statement found: " + foundTerm.getTerm() + " " +
+            foundTerm.getSentence() + " (Confidence Score: " +
+            foundTerm.getConfidenceScore() + ")");
+        } else {
+            // Term not found, inform the user
+            System.out.println("Term " + term + " not found in the knowledge base.");
+        }
+    }    
