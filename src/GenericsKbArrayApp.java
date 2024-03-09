@@ -14,31 +14,6 @@ public class GenericsKbArrayApp {
     private static KnowledgeEntry[] knowledgeBase = new KnowledgeEntry[MAX_SIZE];
     private static int currentSize = 0;
 
-    private static class KnowledgeEntry {
-        String term;
-        String sentence;
-        double confidenceScore;
-
-        public KnowledgeEntry(String term, String sentence, double confidenceScore) {
-            this.term = term;
-            this.sentence = sentence;
-            this.confidenceScore = confidenceScore;
-        }
-
-        public String getTerm() {
-            return term;
-        }
-
-        public String getSentence() {
-            return sentence;
-        }
-
-        public float getConfidenceScore() {
-            return confidenceScore;
-        }
-    }
- 
-
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int choice;
@@ -46,7 +21,7 @@ public class GenericsKbArrayApp {
         do {
             Menu();
             System.out.print("Enter your choice: ");
-            choice = input.nextInt();
+            choice = input.nextLine();
 
             switch (choice) {
                 case 1:
@@ -196,7 +171,32 @@ public class GenericsKbArrayApp {
         else{
             System.out.println("Term " + term + " not found in the knowledge base.");
         }
+        }
          
+    }
+
+    private static class KnowledgeEntry {
+        String term;
+        String sentence;
+        double confidenceScore;
+
+        public KnowledgeEntry(String term, String sentence, double confidenceScore) {
+            this.term = term;
+            this.sentence = sentence;
+            this.confidenceScore = confidenceScore;
+        }
+
+        public String getTerm() {
+            return term;
+        }
+
+        public String getSentence() {
+            return sentence;
+        }
+
+        public float getConfidenceScore() {
+            return confidenceScore;
+        }
     }
 
     
