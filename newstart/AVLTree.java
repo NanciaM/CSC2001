@@ -37,7 +37,7 @@ public class AVLTree<dataType extends Comparable<? super dataType>>{
    
    public void visit ( AVLTreeNode<dataType> node )
    {
-      System.out.println (node.data);
+      System.out.println (node.getKey()+ ": "+node.getSentence()+" (" +node.getConfidenceScore()+")");
    }
    public void inOrder ()
    {
@@ -69,7 +69,7 @@ public class AVLTree<dataType extends Comparable<? super dataType>>{
       node.height = Math.max (height (node.left), height (node.right)) + 1;
    }
    
-   public AVLTreeNode<dataType> rotateRight ( AVLTreeNode<dataType> p )
+   public AVLTreeNode<dataType> rotateRight ( AVLTreeNode<dataType> p)
    {
       AVLTreeNode<dataType> q = p.left;
       p.left = q.right;
@@ -107,35 +107,35 @@ public class AVLTree<dataType extends Comparable<? super dataType>>{
       return p;
    }
 
-   public void insert ( String term )
+   public void insert ( String term, String statement, String conScore)
    {
-      root = insert (term, root);
+      root = insert (term, statement, conScore, root);
    }
    public AVLTreeNode<dataType> insert ( String term, String statement, String conScore, AVLTreeNode<dataType> node )
    {
       if (node == null)
-         return new AVLTreeNode<dataType> (term, null, null);
+         return new AVLTreeNode<dataType> (term, statement, conScore, null, null);
       if (term.compareTo (node.key) <= 0)
-         node.left = insert (term, node.left);
+         node.left = insert (term,  statement, conScore, node.left);
       else
-         node.right = insert (term, node.right);
+         node.right = insert (term,  statement, conScore, node.right);
       return balance (node);
    }
 
-   public AVLTreeNode<dataType> find ( String term )
+   public AVLTreeNode<dataType> find ( String term, String statement, String conScore )
    {
       if (root == null)
          return null;
       else
-         return find (term, root);
+         return find (term, statement, conScore, root);
    }
    public AVLTreeNode<dataType> find ( String term, String statement, String conScore, AVLTreeNode<dataType> node )
    {
       if (term.compareTo (node.key) == 0) 
          return node;
       else if (term.compareTo (node.key) < 0)
-         return (node.left == null) ? null : find (term, node.left);
+         return (node.left == null) ? null : find (term,  statement, conScore, node.left);
       else
-         return (node.right == null) ? null : find (term, node.right);
+         return (node.right == null) ? null : find (term,  statement, conScore, node.right);
    }
 }
