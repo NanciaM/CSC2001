@@ -109,57 +109,16 @@ public class AVLTree<dataType extends Comparable<? super dataType>>{
 
    public void insert ( String term )
    {
-      root = insert (term, d, root);
+      root = insert (term, root);
    }
-   public AVLTreeNode<dataType> insert ( String term, dataType d, AVLTreeNode<dataType> node )
+   public AVLTreeNode<dataType> insert ( String term, String statement, String conScore, AVLTreeNode<dataType> node )
    {
       if (node == null)
-         return new AVLTreeNode<dataType> (term, d, null, null);
+         return new AVLTreeNode<dataType> (term, null, null);
       if (term.compareTo (node.key) <= 0)
-         node.left = insert (term, d, node.left);
+         node.left = insert (term, node.left);
       else
-         node.right = insert (term, d, node.right);
-      return balance (node);
-   }
-   
-   public void delete ( String term )
-   {
-      root = delete (term, d, root);
-   }   
-   public AVLTreeNode<dataType> delete ( String term, dataType d, AVLTreeNode<dataType> node )
-   {
-      if (node == null) return null;
-      if (term.compareTo (node.key) < 0)
-         node.left = delete (term,d, node.left);
-      else if (term.compareTo (node.key) > 0)
-         node.right = delete (term,d,node.right);
-      else
-      {
-         AVLTreeNode<dataType> q = node.left;
-         AVLTreeNode<dataType> r = node.right;
-         if (r == null)
-            return q;
-         AVLTreeNode<dataType> min = findMin (r);
-         min.right = removeMin (r);
-         min.left = q;
-         return balance (min);
-      }
-      return balance (node);
-   }
-   
-   public AVLTreeNode<dataType> findMin ( AVLTreeNode<dataType> node )
-   {
-      if (node.left != null)
-         return findMin (node.left);
-      else
-         return node;
-   }
-
-   public AVLTreeNode<dataType> removeMin ( AVLTreeNode<dataType> node )
-   {
-      if (node.left == null)
-         return node.right;
-      node.left = removeMin (node.left);
+         node.right = insert (term, node.right);
       return balance (node);
    }
 
@@ -168,15 +127,15 @@ public class AVLTree<dataType extends Comparable<? super dataType>>{
       if (root == null)
          return null;
       else
-         return find (term, d, root);
+         return find (term, root);
    }
-   public AVLTreeNode<dataType> find ( String term, dataType d, AVLTreeNode<dataType> node )
+   public AVLTreeNode<dataType> find ( String term, String statement, String conScore, AVLTreeNode<dataType> node )
    {
       if (term.compareTo (node.key) == 0) 
          return node;
       else if (term.compareTo (node.key) < 0)
-         return (node.left == null) ? null : find (term, d, node.left);
+         return (node.left == null) ? null : find (term, node.left);
       else
-         return (node.right == null) ? null : find (term, d, node.right);
+         return (node.right == null) ? null : find (term, node.right);
    }
 }
