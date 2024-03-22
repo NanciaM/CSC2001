@@ -52,6 +52,11 @@ public class AVLTree<dataType extends Comparable<? super dataType>>{
          inOrder (node.getRight ());
       }   
    }
+   
+   public AVLTreeNode<dataType> getRoot() {
+        return root;
+    }
+
    public int height ( AVLTreeNode<dataType> node )
    {
       if (node != null)
