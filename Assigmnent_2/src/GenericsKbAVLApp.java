@@ -10,7 +10,7 @@ import java.io.*;
 import java.io.FileNotFoundException;
 
 public class  GenericsKbAVLApp{
-    public static AVLTree avlKnowledgeBase = new AVLTree();
+     public static AVLTree avlKnowledgeBase = new AVLTree();
     public static int currentSize = 0;
     
     public static void main(String[] args) {
@@ -99,27 +99,31 @@ public class  GenericsKbAVLApp{
 	 Scanner fileTerms = new Scanner(new FileInputStream(Qfile));
         while(fileTerms.hasNextLine()){
         String word = fileTerms.nextLine();
-        avlKnowledgeBase.find(word);
+	String statement = ""; // Default value for statement and cofidenceScore
+            String conScore = "";
+            avlKnowledgeBase.find(word, statement, conScore);
         }
     }
 
-    public static String searchInFile(Scanner input){
-        System.out.print("Enter the term to search: ");
-        String term = input.next();
-        input.nextLine(); 
-	System.out.print("Enter the Statement: ");
-	String statement = input.next();
-	input.nextLine();
-	System.out.print("Enter Cofidence score: ");
-	Double cScore = input.nextDouble();
-	String confidenceScore = Double.toString(cScore);
-	input.nextLine();
-        if ((avlKnowledgeBase.find(term,statement, confidenceScore)).equalsTo(0)){
-            return node.visit();
-        }
-        else{
-           System.out.println("Term not found: "+ term );
-        }
-    }
+    public static String searchInFile(Scanner input) {
+    System.out.print("Enter the term to search: ");
+    String term = input.next();
+    input.nextLine();
+    System.out.print("Enter the Statement: ");
+    String statement = input.next();
+    input.nextLine();
+    System.out.print("Enter Confidence score: ");
+    Double cScore = input.nextDouble();
+    String confidenceScore = Double.toString(cScore);
+    input.nextLine();
 
+    // Check if the node is found in the AVL tree
+    AVLTreeNode<dataType> foundNode = avlKnowledgeBase.find(term, statement, confidenceScore, avlKnowledgeBase.getRoot());
+    if (foundNode != null) {
+        return foundNode.visit();
+    } else {
+        System.out.println("Term not found: " + term);
+        return null; // Or any appropriate value to indicate failure
+    }
+  }
 }
