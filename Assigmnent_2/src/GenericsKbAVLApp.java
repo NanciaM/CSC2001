@@ -65,47 +65,39 @@ public class  GenericsKbAVLApp{
                     String term = segment[0];
                     String sentence = segment[1];
                     String confidenceScore = segment[2];
- 
+		    avlKnowledgeBase.insert(term,sentence,confidenceScore);
                 } else {
                     System.out.println("Invalid data format in the file.");
                 }
-                currentSize++;
+               
             }
              
         } catch (FileNotFoundException e) {
             System.out.println("File not found. Please check the file name and try again.");
         } catch (NumberFormatException e) {
             System.out.println("Error parsing confidence score. Please check the file format.");
-        }
-
-	// Populate knowledge base
-        for(int i=0; i<currentSize; i++){
-            Scanner fileInput = new Scanner(new File(fileName));
-            while (fileInput.hasNextLine()) {
-                String line = fileInput.nextLine();
-                String[] segment = line.split("\t");
-                String term = segment[0];
-                String sentence = segment[1];
-                String confidenceScore = segment[2];
-                avlKnowledgeBase.insert(term,sentence,confidenceScore);
-            }
-        }
+      }   
         System.out.println("Knowledge base loaded successfully.");
     }
 
     public static void searchByQuery(Scanner input){
-        System.out.print("Enter the Query file name: ");// get the name of file to be loaded
-        String Qfile = input.next();
-	 Scanner fileTerms = new Scanner(new FileInputStream(Qfile));
-        while(fileTerms.hasNextLine()){
-        String word = fileTerms.nextLine();
-	String statement = ""; // Default value for statement and cofidenceScore
-            String conScore = "";
-            avlKnowledgeBase.find(word, statement, conScore);
-        }
-    }
+	System.out.print("Enter the Query file name: ");// get the name of file to be loaded
+	String Qfile = input.next();
+		 try{
+				// Read in the file
+	 	Scanner fileTerms = new Scanner(new FileInputStream(Qfile));
+		 	while(fileTerms.hasNextLine()){
+		 	String word = fileTerms.nextLine();
+			String statement = ""; // Default value for statement and cofidenceScore
+				String conScore = "";
+				avlKnowledgeBase.find(word, statement, conScore);
+			}
+		} catch(FileNotFoundException e){
+			System.out.println("File not found.");
+		}
+	}
 
-    public static String searchInFile(Scanner input) {
+    public static void searchInFile(Scanner input) {
     System.out.print("Enter the term to search: ");
     String term = input.next();
     input.nextLine();
@@ -118,12 +110,7 @@ public class  GenericsKbAVLApp{
     input.nextLine();
 
     // Check if the node is found in the AVL tree
-    AVLTreeNode<dataType> foundNode = avlKnowledgeBase.find(term, statement, confidenceScore, avlKnowledgeBase.getRoot());
-    if (foundNode != null) {
-        return foundNode.visit();
-    } else {
-        System.out.println("Term not found: " + term);
-        return null; // Or any appropriate value to indicate failure
-    }
+    AVLTreeNode foundNode = avlKnowledgeBase.find(term, statement, confidenceScore, avlKnowledgeBase.getRoot());
+    avlKnowledgeBase.visit(foundNode);
   }
 }
